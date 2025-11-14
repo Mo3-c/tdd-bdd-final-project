@@ -166,6 +166,69 @@ class TestProductRoutes(TestCase):
     #
     # ADD YOUR TEST CASES HERE
     #
+    def test_read_product(self):
+        """It should Read a single Product"""
+        product = self._create_products()[0]
+        response = self.client.get(f"{BASE_URL}/{product.id}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(data["name"], product.name)
+
+    def test_update_product(self):
+        """It should Update a Product"""
+        product = self._create_products()[0]
+        product_data = product.serialize()
+        product_data["name"] = "Updated Name"
+        response = self.client.put(f"{BASE_URL}/{product.id}", json=product_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        updated = response.get_json()
+        self.assertEqual(updated["name"], "Updated Name")
+
+    def test_delete_product(self):
+        """It should Delete a Product"""
+        product = self._create_products()[0]
+        response = self.client.delete(f"{BASE_URL}/{product.id}")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_list_products(self):
+        """It should List all Products"""
+        products = self._create_products(5)
+        response = self.client.get(BASE_URL)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), len(products))
+
+    def test_list_by_name(self):
+        """It should List Products by Name"""
+        product = self._create_products()[0]
+        response = self.client.get(f"{BASE_URL}?name={product.name}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertTrue(all(d["name"] == product.name for d in data))
+
+    def test_read_product(self):
+        """It should Read a single Product"""
+        product = self._create_products()[0]
+        response = self.client.get(f"{BASE_URL}/{product.id}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(data["name"], product.name)
+
+    def test_list_by_category(self):
+        """It should List Products by Category"""
+        product = self._create_products()[0]
+        response = self.client.get(f"{BASE_URL}?category={product.category.name}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertTrue(all(d["category"] == product.category.name for d in data))
+
+    def test_list_by_availability(self):
+        """It should List Products by Availability"""
+        product = self._create_products()[0]
+        response = self.client.get(f"{BASE_URL}?available={product.available}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertTrue(all(d["available"] == product.available for d in data))
 
     ######################################################################
     # Utility functions
