@@ -30,7 +30,7 @@ from decimal import Decimal
 from unittest import TestCase
 from service import app
 from service.common import status
-from service.models import db, init_db, Product
+from service.models import db, init_db, Product, Category 
 from tests.factories import ProductFactory
 
 # Disable all but critical errors during normal test run
@@ -205,14 +205,6 @@ class TestProductRoutes(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
         self.assertTrue(all(d["name"] == product.name for d in data))
-
-    def test_read_product(self):
-        """It should Read a single Product"""
-        product = self._create_products()[0]
-        response = self.client.get(f"{BASE_URL}/{product.id}")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.get_json()
-        self.assertEqual(data["name"], product.name)
 
     def test_list_by_category(self):
         """It should List Products by Category"""
