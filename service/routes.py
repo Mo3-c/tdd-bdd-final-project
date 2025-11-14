@@ -89,7 +89,7 @@ def create_products():
     #
     # Uncomment this line of code once you implement READ A PRODUCT
     #
-    location_url = url_for("get_products", product_id=product.id, _external=True)
+    location_url = url_for("get_product", product_id=product.id, _external=True)
     return jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
 
 ######################################################################
@@ -130,7 +130,7 @@ def delete_product(product_id):
     return "", 204
 
 ######################################################################
-# LIST BY CATEGORY/NAME/AVAILABILITY
+# LIST BY NAME
 ######################################################################
 @app.route("/products", methods=["GET"])
 def list_products():
