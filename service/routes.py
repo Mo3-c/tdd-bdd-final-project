@@ -92,16 +92,6 @@ def create_products():
     location_url = url_for("get_products", product_id=product.id, _external=True)
     return jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
 
-
-######################################################################
-# L I S T   A L L   P R O D U C T S
-######################################################################
-@app.route("/products", methods=["GET"])
-def list_products():
-    """List all Products"""
-    products = Product.all()
-    return jsonify([p.serialize() for p in products]), 200
-
 ######################################################################
 # R E A D   A   P R O D U C T
 ######################################################################
@@ -140,7 +130,7 @@ def delete_product(product_id):
     return "", 204
 
 ######################################################################
-# LIST BY NAME
+# LIST BY CATEGORY/NAME/AVAILABILITY
 ######################################################################
 @app.route("/products", methods=["GET"])
 def list_products():
