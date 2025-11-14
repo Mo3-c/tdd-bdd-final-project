@@ -104,7 +104,58 @@ def step_impl(context, element_name):
 # to get the element id of any button
 ##################################################################
 
-## UPDATE CODE HERE ##
+##################################################################
+# BUTTON INTERACTIONS
+##################################################################
+
+@when('I press the "{button_name}" button')
+def step_impl(context, button_name):
+    button_id = button_name.lower() + '-btn'
+    button = WebDriverWait(context.driver, context.wait_seconds).until(
+        expected_conditions.element_to_be_clickable((By.ID, button_id))
+    )
+    button.click()
+
+##################################################################
+# MESSAGE VERIFICATIONS
+##################################################################
+
+@then('I should see the message "Success"')
+def step_impl(context):
+    message_id = 'message'
+    message = WebDriverWait(context.driver, context.wait_seconds).until(
+        expected_conditions.presence_of_element_located((By.ID, message_id))
+    )
+    assert message.text == "Success"
+
+@then('I should see the message "Product has been Deleted!"')
+def step_impl(context):
+    message_id = 'message'
+    message = WebDriverWait(context.driver, context.wait_seconds).until(
+        expected_conditions.presence_of_element_located((By.ID, message_id))
+    )
+    assert message.text == "Product has been Deleted!"
+
+##################################################################
+# SEARCH RESULTS VERIFICATIONS
+##################################################################
+
+@then('I should see "{product_name}" in the results')
+def step_impl(context, product_name):
+    results_id = 'search_results'
+    results = WebDriverWait(context.driver, context.wait_seconds).until(
+        expected_conditions.presence_of_element_located((By.ID, results_id))
+    )
+    assert product_name in results.text
+
+@then('I should not see "{product_name}" in the results')
+def step_impl(context, product_name):
+    results_id = 'search_results'
+    results = WebDriverWait(context.driver, context.wait_seconds).until(
+        expected_conditions.presence_of_element_located((By.ID, results_id))
+    )
+    assert product_name not in results.text
+
 
 ##################################################################
 # This code works because of the following naming convention:
