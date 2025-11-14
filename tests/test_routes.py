@@ -22,15 +22,14 @@ Test cases can be run with the following:
   codecov --token=$CODECOV_TOKEN
 
   While debugging just these tests it's convenient to use this:
-    nosetests --stop tests/test_service.py:TestProductService
-"""
+  nosetests --stop tests/test_service.py:TestProductService"""
 import os
 import logging
 from decimal import Decimal
 from unittest import TestCase
 from service import app
 from service.common import status
-from service.models import db, init_db, Product, Category 
+from service.models import db, init_db, Product
 from tests.factories import ProductFactory
 
 # Disable all but critical errors during normal test run
