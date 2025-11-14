@@ -92,6 +92,7 @@ def create_products():
     location_url = url_for("get_product", product_id=product.id, _external=True)
     return jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
 
+
 ######################################################################
 # R E A D   A   P R O D U C T
 ######################################################################
@@ -102,6 +103,7 @@ def get_product(product_id):
     if not product:
         abort(404, description=f"Product with id={product_id} was not found")
     return jsonify(product.serialize()), 200
+
 
 ######################################################################
 # U P D A T E   A   P R O D U C T
@@ -117,6 +119,7 @@ def update_product(product_id):
     product.update()
     return jsonify(product.serialize()), 200
 
+
 ######################################################################
 # D E L E T E   A   P R O D U C T
 ######################################################################
@@ -129,6 +132,7 @@ def delete_product(product_id):
     product.delete()
     return "", 204
 
+
 ######################################################################
 # LIST BY NAME
 ######################################################################
@@ -138,7 +142,7 @@ def list_products():
     name = request.args.get("name")
     category = request.args.get("category")
     available = request.args.get("available")
-    
+
     query = Product.query
     if name:
         query = Product.find_by_name(name)
@@ -146,5 +150,5 @@ def list_products():
         query = Product.find_by_category(Category[category])
     elif available is not None:
         query = Product.find_by_availability(available.lower() == "true")
-    
+
     return jsonify([p.serialize() for p in query]), 200
